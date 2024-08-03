@@ -1,7 +1,7 @@
 """
 MIT License
 
-Copyright (c) 2024 NedeeshaWeerasuriya
+Copyright (c) 2024 Nedeesha Weerasuriya
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -176,7 +176,6 @@ class AutoPWLF(object):
 
         Returns:
             y_smooth: smoothed y values
-        
         """
         # Smoothing the data using Savitzky-Golay filter
         window_size = int(3 + len(self.x) / 50)
@@ -293,7 +292,6 @@ class AutoPWLF(object):
         Returns:
             optimal_breaks: optimal number of breaks
             my_pwlf: PiecewiseLinFit model
-
         """
         self.stationary_points = self.find_num_stationary_points()
         min_breaks = self.stationary_points - buffer
