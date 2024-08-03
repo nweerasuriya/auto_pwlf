@@ -1,7 +1,26 @@
 """
-Find optimal number of break points for a piecewise linear fit.
-Use the Bayesian Information Criterion (BIC) to find the optimal number of breaks.
-Fit the model with the optimal number of breaks using ElasticNetCV for regularization.
+MIT License
+
+Copyright (c) 2024 NedeeshaWeerasuriya
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
 """
 
 __date__ = "2024-08-03"
@@ -167,10 +186,7 @@ class AutoPWLF(object):
         self.y_smooth = savgol_filter(self.y, window_size, poly_order)
         return self.y_smooth
 
-    def find_num_stationary_points(
-        self,
-        plot_fit: bool = False,
-    ) -> int:
+    def find_num_stationary_points(self, plot_fit: bool = False,) -> int:
         """
         Find the number of stationary points in the data set to use as min and max breaks
         First fit a smoothened interpolation function on the data
@@ -194,7 +210,9 @@ class AutoPWLF(object):
         peaks, valleys = self._find_peaks_valleys(
             ynew, self.peak_threshold, self.prominence_threshold
         )
-        stationary_points = (len(peaks) + len(valleys)) // 2 + 2 # Adding 2 to account for the end points
+        stationary_points = (
+            len(peaks) + len(valleys)
+        ) // 2 + 2  # Adding 2 to account for the end points
         return stationary_points
 
     def fit(
@@ -282,7 +300,11 @@ class AutoPWLF(object):
         max_breaks = self.stationary_points + buffer
 
         optimal_breaks, my_pwlf = self.fit(
-            min_breaks, max_breaks, complexity_penalty=self.complexity_penalty, fitfast=fitfast, plot_results=plot_results
+            min_breaks,
+            max_breaks,
+            complexity_penalty=self.complexity_penalty,
+            fitfast=fitfast,
+            plot_results=plot_results,
         )
 
         return optimal_breaks, my_pwlf
