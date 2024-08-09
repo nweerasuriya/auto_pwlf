@@ -8,15 +8,15 @@ setup(
     description="Automated piecewise linear fitting",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/auto_pwlf",
-    packages=find_packages(),
+    url="https://github.com/nweerasuriya/auto_pwlf",
+    packages=find_packages(where="src"),
+    package_dir={"": "src"},
     install_requires=[
-        "numpy>=2.0",
-        "scipy>=1.0",
+        "numpy>=1.18",
+        "scipy>=1.4",
         "matplotlib>=3.0",
         "pwlf>=2.0",
-        "pandas>=2.0",
-        "sphinx>=5.0",
+        "pandas>=1.0",
     ],
     classifiers=[
         "Development Status :: 3 - Alpha",
@@ -29,6 +29,8 @@ setup(
         "Programming Language :: Python :: 3.9",
         "License :: OSI Approved :: MIT License",
     ],
-    extras_require={"docs": ["sphinx", "sphinx_rtd_theme",]},
+    extras_require={
+        "docs": ["sphinx>=3.0", "sphinx_rtd_theme"],
+    },
     python_requires=">=3.7",
 )
