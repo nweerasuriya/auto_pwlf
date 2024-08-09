@@ -21,4 +21,9 @@ Contents
     :undoc-members:
     :show-inheritance:
 
+.. autofunction:: helpers.plot_piecewise_linear_fit
+
+
+Examples
+-----------
 

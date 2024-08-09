@@ -31,10 +31,6 @@ __version__ = "0.1"
 import numpy as np
 from scipy.interpolate import interp1d
 from scipy.signal import find_peaks, savgol_filter, peak_prominences
-from src.helpers import (
-    plot_piecewise_linear_fit,
-    plot_savgol_fit,
-)
 import pwlf
 
 
@@ -163,26 +159,20 @@ class AutoPWLF(object):
         y_smooth = savgol_filter(y, window_size, poly_order)
         return y_smooth
 
-    def find_num_stationary_points(self, plot_fit: bool = False,) -> int:
+    def find_num_stationary_points(self) -> int:
         """
         Find the number of stationary points in the data set to use as min and max breaks
         First fit a smoothened interpolation function on the data
         Then find the number of peaks and valleys in the data
 
-        Args:
-            plot_fit: check if the fit should be plotted
-
         Returns:
             int: Number of stationary points
         """
-        y_smooth = self.sav_gol_fit(self.x, self.y, poly_order=self.smooth_polyorder)
+        y_smooth = self._sav_gol_fit(self.x, self.y, poly_order=self.smooth_polyorder)
         # Linear interpolation for quicker runtime
         f = interp1d(self.x, y_smooth, kind="linear")
         xnew = np.linspace(self.x.min(), self.x.max(), num=100)
         ynew = f(xnew)
-        if plot_fit:
-            fig = plot_savgol_fit(self.x, self.y, y_smooth)
-            fig.show()
         # Find maxima and minima of the smoothed linear interpolation
         peaks, valleys = self._find_peaks_valleys(
             ynew, self.peak_threshold, self.prominence_threshold
@@ -198,7 +188,6 @@ class AutoPWLF(object):
         max_breaks: int = None,
         complexity_penalty: int = 20,
         fitfast: bool = False,
-        plot_results: bool = True,
     ) -> tuple:
         """
         Finds the optimal number of breaks for a piecewise linear fit using the Bayesian Information Criterion (BIC)
@@ -209,7 +198,6 @@ class AutoPWLF(object):
             max_breaks: maximum number of breaks
             complexity_penalty: complexity penalty for the BIC
             fitfast: if true, use the fast fitting method for the piecewise linear fit
-            plot_results: check if results should be plotted
 
         Returns:
             tuple: Optimal number of breaks, PiecewiseLinFit model
@@ -247,23 +235,15 @@ class AutoPWLF(object):
         self.optimal_breaks = min_breaks + optimal_index
 
         print(f"Optimal number of breaks: {self.optimal_breaks}")
-
-        if plot_results:
-            fig = plot_piecewise_linear_fit(self.x, self.y, yhat, self.optimal_breaks)
-            fig.show()
-
         return self.optimal_breaks, pwlf_list[optimal_index]
 
-    def auto_fit(
-        self, fitfast: bool = False, plot_results: bool = True, buffer: int = 0,
-    ) -> tuple:
+    def auto_fit(self, fitfast: bool = False, buffer: int = 0,) -> tuple:
         """
         Fit a piecewise linear function with automated number of breaks found from the stationary points
         Adding a buffer to the number of breaks to allow for more flexibility with the model chosen by the BIC
 
         Args:
             fitfast: if true, use the fast fitting method for the piecewise linear fit
-            plot_results: check if results should be plotted
             buffer: buffer for the number of breaks to allow for more flexibility
 
         Returns:
@@ -278,7 +258,5 @@ class AutoPWLF(object):
             max_breaks,
             complexity_penalty=self.complexity_penalty,
             fitfast=fitfast,
-            plot_results=plot_results,
         )
-
         return optimal_breaks, my_pwlf
