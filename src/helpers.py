@@ -55,26 +55,3 @@ def plot_piecewise_linear_fit(
     ax.set_title("Piecewise Linear Fit")
     ax.legend(["Data", "Piecewise Linear Fit"])
     return fig
-
-
-def plot_savgol_fit(x: np.array, y: np.array, y_smooth: np.array):
-    """
-    Plots the Savitzky-Golay filter fit of the given data set
-
-    Args:
-        x: x values
-        y: y values
-        y_smooth: smoothed y values
-
-    Returns: 
-        fig: matplotlib figure object of the Savitzky-Golay fit  
-    """
-    fig, ax = plt.subplots(figsize=(10, 5))
-    ax.scatter(x, y, c="r")
-    ax.plot(x, y_smooth)
-
-    ax.set_ylabel("Value")
-    ax.set_xlabel("Index")
-    ax.set_title("Savitzky-Golay Filter Fit")
-    ax.legend(["Data", "Savitzky-Golay Fit"])
-    return fig
