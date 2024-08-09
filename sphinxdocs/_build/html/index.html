@@ -57,6 +57,7 @@
 <li><a class="reference internal" href="#helpers.plot_piecewise_linear_fit"><code class="docutils literal notranslate"><span class="pre">plot_piecewise_linear_fit()</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
 </ul>
 </li>
 </ul>
@@ -128,14 +129,13 @@ Supply x and y values which will be used to fit the piecewise linear function to
 
 <dl class="py method">
 <dt class="sig sig-object py" id="auto_pwlf.AutoPWLF.auto_fit">
-<span class="sig-name descname"><span class="pre">auto_fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fitfast</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#bool" title="(in Python v3.7)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#bool" title="(in Python v3.7)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#int" title="(in Python v3.7)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/stdtypes.html#tuple" title="(in Python v3.7)"><span class="pre">tuple</span></a></span></span><a class="reference internal" href="_modules/auto_pwlf.html#AutoPWLF.auto_fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#auto_pwlf.AutoPWLF.auto_fit" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">auto_fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fitfast</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#bool" title="(in Python v3.7)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#int" title="(in Python v3.7)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/stdtypes.html#tuple" title="(in Python v3.7)"><span class="pre">tuple</span></a></span></span><a class="reference internal" href="_modules/auto_pwlf.html#AutoPWLF.auto_fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#auto_pwlf.AutoPWLF.auto_fit" title="Link to this definition"></a></dt>
 <dd><p>Fit a piecewise linear function with automated number of breaks found from the stationary points
 Adding a buffer to the number of breaks to allow for more flexibility with the model chosen by the BIC</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fitfast</strong> – if true, use the fast fitting method for the piecewise linear fit</p></li>
-<li><p><strong>plot_results</strong> – check if results should be plotted</p></li>
 <li><p><strong>buffer</strong> – buffer for the number of breaks to allow for more flexibility</p></li>
 </ul>
 </dd>
@@ -150,26 +150,23 @@ Adding a buffer to the number of breaks to allow for more flexibility with the m
 
 <dl class="py method">
 <dt class="sig sig-object py" id="auto_pwlf.AutoPWLF.find_num_stationary_points">
-<span class="sig-name descname"><span class="pre">find_num_stationary_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plot_fit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#bool" title="(in Python v3.7)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#int" title="(in Python v3.7)"><span class="pre">int</span></a></span></span><a class="reference internal" href="_modules/auto_pwlf.html#AutoPWLF.find_num_stationary_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#auto_pwlf.AutoPWLF.find_num_stationary_points" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">find_num_stationary_points</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#int" title="(in Python v3.7)"><span class="pre">int</span></a></span></span><a class="reference internal" href="_modules/auto_pwlf.html#AutoPWLF.find_num_stationary_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#auto_pwlf.AutoPWLF.find_num_stationary_points" title="Link to this definition"></a></dt>
 <dd><p>Find the number of stationary points in the data set to use as min and max breaks
 First fit a smoothened interpolation function on the data
 Then find the number of peaks and valleys in the data</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>plot_fit</strong> – check if the fit should be plotted</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of stationary points</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Number of stationary points</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#int" title="(in Python v3.7)">int</a></p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#int" title="(in Python v3.7)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="auto_pwlf.AutoPWLF.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_breaks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#int" title="(in Python v3.7)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_breaks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#int" title="(in Python v3.7)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">complexity_penalty</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#int" title="(in Python v3.7)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fitfast</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#bool" title="(in Python v3.7)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#bool" title="(in Python v3.7)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/stdtypes.html#tuple" title="(in Python v3.7)"><span class="pre">tuple</span></a></span></span><a class="reference internal" href="_modules/auto_pwlf.html#AutoPWLF.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#auto_pwlf.AutoPWLF.fit" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_breaks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#int" title="(in Python v3.7)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_breaks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#int" title="(in Python v3.7)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">complexity_penalty</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#int" title="(in Python v3.7)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fitfast</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#bool" title="(in Python v3.7)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/stdtypes.html#tuple" title="(in Python v3.7)"><span class="pre">tuple</span></a></span></span><a class="reference internal" href="_modules/auto_pwlf.html#AutoPWLF.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#auto_pwlf.AutoPWLF.fit" title="Link to this definition"></a></dt>
 <dd><p>Finds the optimal number of breaks for a piecewise linear fit using the Bayesian Information Criterion (BIC)
 and then plots the piecewise linear fit of the given data set</p>
 <dl class="field-list simple">
@@ -179,7 +176,6 @@ and then plots the piecewise linear fit of the given data set</p>
 <li><p><strong>max_breaks</strong> – maximum number of breaks</p></li>
 <li><p><strong>complexity_penalty</strong> – complexity penalty for the BIC</p></li>
 <li><p><strong>fitfast</strong> – if true, use the fast fitting method for the piecewise linear fit</p></li>
-<li><p><strong>plot_results</strong> – check if results should be plotted</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -215,6 +211,9 @@ and then plots the piecewise linear fit of the given data set</p>
 </dl>
 </dd></dl>
 
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
 </section>
 </section>
 
