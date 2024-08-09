@@ -1,8 +1,0 @@
-AutoPWLF package contents
-=========================
-
-.. autoclass:: auto_pwlf.AutoPWLF
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
