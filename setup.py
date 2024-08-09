@@ -16,6 +16,7 @@ setup(
         "matplotlib>=3.0",
         "pwlf>=2.0",
         "pandas>=2.0",
+        "sphinx>=5.0",
     ],
     classifiers=[
         "Development Status :: 3 - Alpha",
