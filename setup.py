@@ -11,11 +11,11 @@ setup(
     url="https://github.com/yourusername/auto_pwlf",
     packages=find_packages(),
     install_requires=[
-        "numpy" >= 2.0,
-        "scipy" >= 1.0,
-        "matplotlib" >= 3.0,
-        "pwlf" >= 2.0,
-        "pandas" >= 2.0,
+        "numpy>=2.0",
+        "scipy>=1.0",
+        "matplotlib>=3.0",
+        "pwlf>=2.0",
+        "pandas>=2.0",
     ],
     classifiers=[
         "Development Status :: 3 - Alpha",
