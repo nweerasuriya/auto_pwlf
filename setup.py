@@ -12,7 +12,7 @@ setup(
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     install_requires=[
-        "numpy>=2.0.1",
+        "numpy>=2.0",
         "scipy>=1.14",
         "pwlf>=2.2.1",
     ],
