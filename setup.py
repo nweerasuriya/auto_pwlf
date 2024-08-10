@@ -13,7 +13,7 @@ setup(
     package_dir={"": "src"},
     install_requires=[
         "numpy>=1.24.0",
-        "scipy>=1.14.0",
+        "scipy>=1.11.4",
         "pwlf>=2.2.1",
     ],
     classifiers=[
