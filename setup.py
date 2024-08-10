@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="auto_pwlf",
-    version="0.1.0",
+    version="0.2.0",
     author="Nedeesha Weerasuriya",
     author_email="nedeeshawork@gmail.com",
     description="Automated piecewise linear fitting",
