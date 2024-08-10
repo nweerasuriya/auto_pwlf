@@ -7,5 +7,5 @@ The piecewise fitting uses the [pwlf module](https://github.com/cjekel/piecewise
 AutoPWLF provides the additional functionality of automatically determining the optimal number of line segments.
 
 
-![image](https://github.com/user-attachments/assets/cb21b3c2-2ccc-49ff-ab42-f4aa2b991091)
+![image](https://github.com/nweerasuriya/auto_pwlf/blob/main/examples/S%26P500_autofit.png)
 
