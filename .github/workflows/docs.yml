@@ -14,20 +14,31 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.x'
+        python-version: '3.9'
     
     - name: Install dependencies
       run: |
-        pip install .
-        pip install sphinx_rtd_theme
+        python -m pip install --upgrade pip
+        pip install .[docs]
+        pip install -e .
+    
+    - name: Debug installed packages
+      run: pip list
     
     - name: Build documentation
       run: |
         cd docs
-        make html
+        make html SPHINXOPTS="-v"
+    
+    - name: Debug documentation build
+      if: failure()
+      run: |
+        cd docs
+        cat _build/html/output.txt
     
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
+      if: success()
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./docs/_build/html
