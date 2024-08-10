@@ -2,15 +2,14 @@ from setuptools import setup, find_packages
 
 setup(
     name="autopwlf",
-    version="0.4.0",
+    version="0.5.0",
     author="Nedeesha Weerasuriya",
     author_email="nedeeshawork@gmail.com",
     description="Automated piecewise linear fitting",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     url="https://github.com/nweerasuriya/auto_pwlf",
-    packages=find_packages(where="src"),
-    package_dir={"": "src"},
+    packages=["autopwlf"],
     install_requires=[
         "numpy>=1.24.0",
         "scipy>=1.11.4",
