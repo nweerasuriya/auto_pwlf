@@ -12,9 +12,9 @@ setup(
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     install_requires=[
-        "numpy>=1.18",
-        "scipy>=1.4",
-        "pwlf>=2.0",
+        "numpy>=2.0.1",
+        "scipy>=1.14",
+        "pwlf>=2.2.1",
     ],
     classifiers=[
         "Development Status :: 3 - Alpha",
