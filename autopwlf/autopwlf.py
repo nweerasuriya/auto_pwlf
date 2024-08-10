@@ -237,7 +237,7 @@ class AutoPWLF(object):
         print(f"Optimal number of breaks: {self.optimal_breaks}")
         return self.optimal_breaks, pwlf_list[optimal_index]
 
-    def auto_fit(self, fitfast: bool = False, buffer: int = 0,) -> tuple:
+    def auto_fit(self, fitfast: bool = True, buffer: int = 2) -> tuple:
         """
         Fit a piecewise linear function with automated number of breaks found from the stationary points
         Adding a buffer to the number of breaks to allow for more flexibility with the model chosen by the BIC

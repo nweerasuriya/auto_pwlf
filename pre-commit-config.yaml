@@ -1,0 +1,23 @@
+files: ^autopwlf/
+repos:
+  - repo: https://github.com/psf/black-pre-commit-mirror
+    rev: 23.10.1
+    hooks:
+    - id: black
+      language_version: python3.9
+    - id: black-jupyter
+      language_version: python3.9
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.4.0
+    hooks:
+    - id: check-case-conflict # check filenames do not have any conflicts for case insensitive filesystems
+    - id: check-merge-conflict # check whether there are any unresolved merge conflicts
+    - id: end-of-file-fixer # ensure files end with newline
+    - id: name-tests-test # check naming convention of tests in tests/
+      args: ['--django'] # django option means tests should match pattern test*.py
+    - id: trailing-whitespace # remove trailing whitespace
+  - repo: https://github.com/pycqa/isort
+    rev: 5.12.0
+    hooks:
+    - id: isort
+      args: ["--profile", "black"]
