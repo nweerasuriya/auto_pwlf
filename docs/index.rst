@@ -10,13 +10,13 @@ Installation
 
 .. code-block:: bash
 
-    $ pip install -U auto_pwlf
+    $ pip install -U autopwlf
 
 
 Contents
 -----------
 
-.. autoclass:: auto_pwlf.AutoPWLF
+.. autoclass:: autopwlf.AutoPWLF
     :members:
     :undoc-members:
     :show-inheritance:
