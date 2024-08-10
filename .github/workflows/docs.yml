@@ -19,7 +19,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install sphinx sphinx_rtd_theme
+        pip install .[docs]  # This installs your package with the docs extra
         pip install -e .  # Install your package
     
     - name: Build documentation
