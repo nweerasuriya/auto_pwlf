@@ -29,9 +29,9 @@ __version__ = "0.1"
 
 
 import numpy as np
-from scipy.interpolate import interp1d
-from scipy.signal import find_peaks, savgol_filter, peak_prominences
 import pwlf
+from scipy.interpolate import interp1d
+from scipy.signal import find_peaks, peak_prominences, savgol_filter
 
 
 class AutoPWLF(object):
@@ -50,7 +50,6 @@ class AutoPWLF(object):
         weights: np.array = None,
         random_seed: int = None,
         smooth_polyorder: int = 0,
-        complexity_penalty: int = 20,
         peak_threshold: float = 0.25,
         prominence_threshold: float = 0.1,
     ):
@@ -67,7 +66,6 @@ class AutoPWLF(object):
             weights: weights for the least squares problem
             random_seed: random seed for reproducibility
             smooth_polyorder: polynomial order for the Savitzky-Golay filter
-            complexity_penalty: complexity penalty for the BIC
             peak_threshold: threshold for identifying peaks and valleys
             prominence_threshold: threshold for identifying significant peaks and valleys
         """
@@ -81,7 +79,6 @@ class AutoPWLF(object):
         self.weights = weights
         self.random_seed = random_seed
         self.smooth_polyorder = smooth_polyorder
-        self.complexity_penalty = complexity_penalty
         self.peak_threshold = peak_threshold
         self.prominence_threshold = prominence_threshold
 
@@ -237,7 +234,9 @@ class AutoPWLF(object):
         print(f"Optimal number of breaks: {self.optimal_breaks}")
         return self.optimal_breaks, pwlf_list[optimal_index]
 
-    def auto_fit(self, fitfast: bool = True, buffer: int = 2) -> tuple:
+    def auto_fit(
+        self, fitfast: bool = True, buffer: int = 2, complexity_penalty=20
+    ) -> tuple:
         """
         Fit a piecewise linear function with automated number of breaks found from the stationary points
         Adding a buffer to the number of breaks to allow for more flexibility with the model chosen by the BIC
@@ -245,6 +244,7 @@ class AutoPWLF(object):
         Args:
             fitfast: if true, use the fast fitting method for the piecewise linear fit
             buffer: buffer for the number of breaks to allow for more flexibility
+            complexity_penalty: complexity penalty for the BIC
 
         Returns:
             tuple: Optimal number of breaks, PiecewiseLinFit model
@@ -256,8 +256,7 @@ class AutoPWLF(object):
         optimal_breaks, my_pwlf = self.fit(
             min_breaks,
             max_breaks,
-            complexity_penalty=self.complexity_penalty,
+            complexity_penalty=complexity_penalty,
             fitfast=fitfast,
         )
         return optimal_breaks, my_pwlf
- 
