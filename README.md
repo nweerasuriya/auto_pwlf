@@ -7,10 +7,10 @@ Full Documentation can be found here: [Documentation](https://autopwlf.readthedo
 Installation available through pip: https://pypi.org/project/autopwlf/
 ```
 pip install autopwlf
-
 ```
 
-![](https://github.com/nweerasuriya/auto_pwlf/blob/main/examples/S%26P500_autofit.png)
+![image](https://github.com/user-attachments/assets/aac67188-37ad-4e89-8eca-160d67e6c7d9)
+
 
 The piecewise fitting uses the [pwlf module](https://github.com/cjekel/piecewise_linear_fit_py) with full credit to all contributors to this package.
 
