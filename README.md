@@ -4,13 +4,13 @@ Piecewise Linear Fit with ability to automatically find the optimal number of li
 Full Documentation can be found here: [Documentation](https://autopwlf.readthedocs.io/en/latest/#)
 
 
-Installation available through pip.
+Installation available through pip: https://pypi.org/project/autopwlf/
 ```
 pip install autopwlf
 
 ```
 
-![image](https://github.com/nweerasuriya/auto_pwlf/blob/main/examples/S%26P500_autofit.png)
+![](https://github.com/nweerasuriya/auto_pwlf/blob/main/examples/S%26P500_autofit.png)
 
 The piecewise fitting uses the [pwlf module](https://github.com/cjekel/piecewise_linear_fit_py) with full credit to all contributors to this package.
 
