@@ -15,18 +15,10 @@ jobs:
       with:
         python-version: '3.x'
     - name: Install pypa/build
-      run: >-
-        python -m
-        pip install
-        build
-        --user
+      run: python -m pip install build --user
     - name: Build a binary wheel and a source tarball
-      run: >-
-        python -m
-        build
-        --sdist
-        --wheel
-        --outdir dist/
+      run: python -m build --sdist --wheel --outdir dist/
     - name: Publish distribution 📦 to PyPI
       uses: pypa/gh-action-pypi-publish@master
       with:
+        password: ${{ secrets.PYPI_API_TOKEN }}
