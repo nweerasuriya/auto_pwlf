@@ -7,7 +7,6 @@ Full Documentation can be found here: [Documentation](https://autopwlf.readthedo
 Installation available through pip: https://pypi.org/project/autopwlf/
 ```
 pip install autopwlf
-
 ```
 
 ![image](https://github.com/user-attachments/assets/aac67188-37ad-4e89-8eca-160d67e6c7d9)
