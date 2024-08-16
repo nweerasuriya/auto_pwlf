@@ -184,7 +184,7 @@ class AutoPWLF(object):
         min_breaks: int,
         max_breaks: int = None,
         complexity_penalty: int = 20,
-        fitfast: bool = False,
+        fitfast: bool = True,
     ) -> tuple:
         """
         Finds the optimal number of breaks for a piecewise linear fit using the Bayesian Information Criterion (BIC)
@@ -202,12 +202,14 @@ class AutoPWLF(object):
         if not max_breaks:
             max_breaks = min_breaks
 
+        if min_breaks > 1:
+            min_breaks = 1
+
         # BIC calculation
         bic_values = []
         pwlf_list = []
         n = len(self.y)
         for breaks in range(min_breaks, max_breaks + 1):
-            print(f"Fitting model with {breaks} breaks...")
             my_pwlf = pwlf.PiecewiseLinFit(
                 self.x,
                 self.y,
@@ -236,7 +238,7 @@ class AutoPWLF(object):
 
     def auto_fit(
         self, fitfast: bool = True, buffer: int = 2, complexity_penalty=20
-    ) -> tuple:
+    ) -> pwlf.PiecewiseLinFit:
         """
         Fit a piecewise linear function with automated number of breaks found from the stationary points
         Adding a buffer to the number of breaks to allow for more flexibility with the model chosen by the BIC
@@ -247,7 +249,7 @@ class AutoPWLF(object):
             complexity_penalty: complexity penalty for the BIC
 
         Returns:
-            tuple: Optimal number of breaks, PiecewiseLinFit model
+            pwlf.PiecewiseLinFit: PiecewiseLinFit model
         """
         self.stationary_points = self.find_num_stationary_points()
         min_breaks = self.stationary_points - buffer
@@ -259,4 +261,6 @@ class AutoPWLF(object):
             complexity_penalty=complexity_penalty,
             fitfast=fitfast,
         )
-        return optimal_breaks, my_pwlf
+        self.optimal_breaks = optimal_breaks
+
+        return my_pwlf
