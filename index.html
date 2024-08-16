@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AutoPWLF Documentation &mdash; AutoPWLF 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=2709fde1"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            AutoPWLF
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">AutoPWLF Documentation</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+<li><a class="reference internal" href="#contents">Contents</a><ul>
+<li><a class="reference internal" href="#autopwlf.AutoPWLF"><code class="docutils literal notranslate"><span class="pre">AutoPWLF</span></code></a><ul>
+<li><a class="reference internal" href="#autopwlf.AutoPWLF.__init__"><code class="docutils literal notranslate"><span class="pre">AutoPWLF.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#autopwlf.AutoPWLF.auto_fit"><code class="docutils literal notranslate"><span class="pre">AutoPWLF.auto_fit()</span></code></a></li>
+<li><a class="reference internal" href="#autopwlf.AutoPWLF.find_num_stationary_points"><code class="docutils literal notranslate"><span class="pre">AutoPWLF.find_num_stationary_points()</span></code></a></li>
+<li><a class="reference internal" href="#autopwlf.AutoPWLF.fit"><code class="docutils literal notranslate"><span class="pre">AutoPWLF.fit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">AutoPWLF</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">AutoPWLF Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="autopwlf-documentation">
+<h1>AutoPWLF Documentation<a class="headerlink" href="#autopwlf-documentation" title="Link to this heading"></a></h1>
+<p>Piecewise Linear Fit with automated selection of the number of segments.</p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>autopwlf
+</pre></div>
+</div>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<p>Default usage involves calling auto_fit() method with the x and y data. fastfit is set to True by default.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">autopwlf</span>
+
+<span class="c1"># Initialize variables</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">150</span><span class="p">)</span>
+
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.4</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.7</span><span class="p">,</span>  <span class="mf">1.7</span><span class="p">,</span>  <span class="mf">1.6</span><span class="p">,</span>  <span class="mf">3.1</span><span class="p">,</span>  <span class="mf">1.9</span><span class="p">,</span>  <span class="mf">4.4</span><span class="p">,</span>  <span class="mf">5.3</span><span class="p">,</span>  <span class="mf">3.3</span><span class="p">,</span>
+        <span class="mf">5.6</span><span class="p">,</span>  <span class="mf">3.7</span><span class="p">,</span>  <span class="mf">5.8</span><span class="p">,</span>  <span class="mf">6.</span> <span class="p">,</span>  <span class="mf">5.1</span><span class="p">,</span>  <span class="mf">5.9</span><span class="p">,</span>  <span class="mf">5.7</span><span class="p">,</span> <span class="mf">10.3</span><span class="p">,</span>  <span class="mf">8.</span> <span class="p">,</span>  <span class="mf">7.5</span><span class="p">,</span>  <span class="mf">8.7</span><span class="p">,</span>
+        <span class="mf">7.9</span><span class="p">,</span>  <span class="mf">9.2</span><span class="p">,</span> <span class="mf">11.</span> <span class="p">,</span> <span class="mf">15.2</span><span class="p">,</span> <span class="mf">18.1</span><span class="p">,</span> <span class="mf">28.4</span><span class="p">,</span> <span class="mf">29.3</span><span class="p">,</span> <span class="mf">29.1</span><span class="p">,</span> <span class="mf">30.4</span><span class="p">,</span> <span class="mf">38.4</span><span class="p">,</span> <span class="mf">37.1</span><span class="p">,</span>
+        <span class="mf">40.5</span><span class="p">,</span> <span class="mf">42.1</span><span class="p">,</span> <span class="mf">47.4</span><span class="p">,</span> <span class="mf">49.1</span><span class="p">,</span> <span class="mf">50.2</span><span class="p">,</span> <span class="mf">51.9</span><span class="p">,</span> <span class="mf">52.5</span><span class="p">,</span> <span class="mf">53.3</span><span class="p">,</span> <span class="mf">54.2</span><span class="p">,</span>
+        <span class="mf">54.1</span><span class="p">,</span> <span class="mf">58.3</span><span class="p">,</span> <span class="mf">59.1</span><span class="p">,</span> <span class="mf">60.2</span><span class="p">,</span> <span class="mf">54.9</span><span class="p">,</span> <span class="mf">55.1</span><span class="p">,</span> <span class="mf">49.3</span><span class="p">,</span> <span class="mf">48.1</span><span class="p">,</span> <span class="mf">47.4</span><span class="p">,</span> <span class="mf">44.1</span><span class="p">,</span>
+        <span class="mf">43.7</span><span class="p">,</span> <span class="mf">42.1</span><span class="p">,</span> <span class="mf">41.5</span><span class="p">,</span> <span class="mf">40.3</span><span class="p">,</span> <span class="mf">39.1</span><span class="p">,</span> <span class="mf">38.9</span><span class="p">,</span> <span class="mf">37.7</span><span class="p">,</span> <span class="mf">36.1</span><span class="p">,</span> <span class="mf">35.5</span><span class="p">,</span> <span class="mf">34.3</span><span class="p">,</span>
+        <span class="mf">42.1</span><span class="p">,</span> <span class="mf">36.8</span><span class="p">,</span> <span class="mf">33.3</span><span class="p">,</span> <span class="mf">30.1</span><span class="p">,</span> <span class="mf">28.9</span><span class="p">,</span> <span class="mf">27.8</span><span class="p">,</span> <span class="mf">26.9</span><span class="p">,</span> <span class="mf">26.1</span><span class="p">,</span> <span class="mf">25.3</span><span class="p">,</span> <span class="mf">24.6</span><span class="p">,</span>
+        <span class="mf">27.</span> <span class="p">,</span> <span class="mf">25.7</span><span class="p">,</span> <span class="mf">25.7</span><span class="p">,</span> <span class="mf">24.8</span><span class="p">,</span> <span class="mf">23.9</span><span class="p">,</span> <span class="mf">23.4</span><span class="p">,</span> <span class="mf">22.5</span><span class="p">,</span> <span class="mf">21.6</span><span class="p">,</span> <span class="mf">20.7</span><span class="p">,</span> <span class="mf">19.8</span><span class="p">,</span> <span class="mf">18.9</span><span class="p">,</span>
+        <span class="mf">16.1</span><span class="p">,</span> <span class="mf">15.4</span><span class="p">,</span> <span class="mf">14.8</span><span class="p">,</span> <span class="mf">13.9</span><span class="p">,</span> <span class="mf">14.9</span><span class="p">,</span> <span class="mf">12.3</span><span class="p">,</span> <span class="mf">11.4</span><span class="p">,</span> <span class="mf">10.7</span><span class="p">,</span>  <span class="mf">9.8</span><span class="p">,</span>  <span class="mf">8.9</span><span class="p">,</span>  <span class="mf">8.1</span><span class="p">,</span>
+        <span class="mf">15.3</span><span class="p">,</span> <span class="mf">18.0</span><span class="p">,</span> <span class="mf">14.5</span> <span class="p">,</span> <span class="mf">11.3</span><span class="p">,</span>  <span class="mf">9.4</span><span class="p">,</span> <span class="mf">10.5</span><span class="p">,</span> <span class="mf">9.8</span><span class="p">,</span> <span class="mf">6.8</span><span class="p">,</span> <span class="mf">6.4</span><span class="p">,</span> <span class="mf">5.4</span><span class="p">,</span> <span class="mf">2.9</span><span class="p">,</span>
+        <span class="mf">3.8</span><span class="p">,</span> <span class="mf">2.4</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mf">3.9</span><span class="p">,</span> <span class="mf">2.7</span><span class="p">,</span> <span class="mf">3.7</span><span class="p">,</span> <span class="mf">4.3</span><span class="p">,</span> <span class="mf">6.3</span><span class="p">,</span> <span class="mf">4.9</span><span class="p">,</span> <span class="mf">6.5</span> <span class="p">,</span>
+        <span class="mf">7.7</span><span class="p">,</span> <span class="mf">6.4</span> <span class="p">,</span> <span class="mf">7.8</span><span class="p">,</span> <span class="mf">7.9</span><span class="p">,</span> <span class="mf">8.7</span><span class="p">,</span> <span class="mf">8.3</span><span class="p">,</span> <span class="mf">10.5</span><span class="p">,</span> <span class="mf">19.7</span><span class="p">,</span> <span class="mf">13.5</span><span class="p">,</span> <span class="mf">19.7</span><span class="p">,</span> <span class="mf">19.6</span><span class="p">,</span>
+        <span class="mf">28.5</span><span class="p">,</span> <span class="mf">38.</span> <span class="p">,</span> <span class="mf">39.</span> <span class="p">,</span> <span class="mf">36.6</span><span class="p">,</span> <span class="mf">38.2</span><span class="p">,</span> <span class="mf">38.3</span><span class="p">,</span> <span class="mf">37.</span> <span class="p">,</span> <span class="mf">36.2</span><span class="p">,</span> <span class="mf">37.</span> <span class="p">,</span> <span class="mf">35.3</span><span class="p">,</span> <span class="mf">34.9</span><span class="p">,</span>
+        <span class="mf">33.8</span><span class="p">,</span> <span class="mf">34.7</span><span class="p">,</span> <span class="mf">33.1</span><span class="p">,</span> <span class="mf">33.1</span><span class="p">,</span> <span class="mf">32.3</span><span class="p">,</span> <span class="mf">33.9</span><span class="p">,</span> <span class="mf">30.9</span><span class="p">,</span> <span class="mf">31.2</span><span class="p">,</span> <span class="mf">31.7</span><span class="p">,</span> <span class="mf">30.8</span><span class="p">,</span> <span class="mf">30.2</span><span class="p">,</span>
+        <span class="mf">30.3</span><span class="p">])</span>
+
+<span class="n">apwlf</span> <span class="o">=</span> <span class="n">autopwlf</span><span class="o">.</span><span class="n">AutoPWLF</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">model_fit</span> <span class="o">=</span> <span class="n">apwlf</span><span class="o">.</span><span class="n">auto_fit</span><span class="p">()</span> <span class="c1"># default complexity penlty is 20</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="https://github.com/nweerasuriya/auto_pwlf/blob/main/examples/example_default_params.png" src="https://github.com/nweerasuriya/auto_pwlf/blob/main/examples/example_default_params.png" />
+</figure>
+<p>Lowering complexity penalty will often result in more segments.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">apwlf</span> <span class="o">=</span> <span class="n">autopwlf</span><span class="o">.</span><span class="n">AutoPWLF</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">model_fit</span> <span class="o">=</span> <span class="n">apwlf</span><span class="o">.</span><span class="n">auto_fit</span><span class="p">(</span><span class="n">complexity</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="https://github.com/nweerasuriya/auto_pwlf/blob/main/examples/example_low_complex_penalty.png" src="https://github.com/nweerasuriya/auto_pwlf/blob/main/examples/example_low_complex_penalty.png" />
+</figure>
+<p>For better model perfomance (at the cost of speed), set fastfit=False. Recommended to use buffer of 0 or 1 to prevent large runtime.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_pwlf</span> <span class="o">=</span> <span class="n">apwlf</span><span class="o">.</span><span class="n">auto_fit</span><span class="p">(</span><span class="n">fastfit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">buffer</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If an upper and lower limit is known for the number of segments, use the following:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">apwlf</span> <span class="o">=</span> <span class="n">autopwlf</span><span class="o">.</span><span class="n">AutoPWLF</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">model_fit</span> <span class="o">=</span> <span class="n">apwlf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">min_breaks</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">max_breaks</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="autopwlf.AutoPWLF">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">autopwlf.</span></span><span class="sig-name descname"><span class="pre">AutoPWLF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disp_res</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#bool" title="(in Python v3.7)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lapack_driver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/stdtypes.html#str" title="(in Python v3.7)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'gelsd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#int" title="(in Python v3.7)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://python.readthedocs.io/en/latest/library/constants.html#None" title="(in Python v3.7)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#int" title="(in Python v3.7)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://python.readthedocs.io/en/latest/library/constants.html#None" title="(in Python v3.7)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smooth_polyorder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#int" title="(in Python v3.7)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peak_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#float" title="(in Python v3.7)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prominence_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#float" title="(in Python v3.7)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autopwlf/autopwlf.html#AutoPWLF"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autopwlf.AutoPWLF" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Class to find the optimal number of breaks for a piecewise linear fit using the Bayesian Information Criterion (BIC)
+and then fit the piecewise linear function to the given data set</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="autopwlf.AutoPWLF.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disp_res</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#bool" title="(in Python v3.7)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lapack_driver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/stdtypes.html#str" title="(in Python v3.7)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'gelsd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#int" title="(in Python v3.7)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://python.readthedocs.io/en/latest/library/constants.html#None" title="(in Python v3.7)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#int" title="(in Python v3.7)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://python.readthedocs.io/en/latest/library/constants.html#None" title="(in Python v3.7)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smooth_polyorder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#int" title="(in Python v3.7)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peak_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#float" title="(in Python v3.7)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prominence_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#float" title="(in Python v3.7)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autopwlf/autopwlf.html#AutoPWLF.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autopwlf.AutoPWLF.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the AutoPWLF class to find the optimal number of breaks and fit a continuous piecewise linear function.
+Supply x and y values which will be used to fit the piecewise linear function to where y(x) = f(x).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_data</strong> – independent variable</p></li>
+<li><p><strong>y_data</strong> – dependent variable</p></li>
+<li><p><strong>disp_res</strong> – display results</p></li>
+<li><p><strong>lapack_driver</strong> – LAPACK driver to use for the linear least squares problem</p></li>
+<li><p><strong>degree</strong> – degree of the polynomial to fit</p></li>
+<li><p><strong>weights</strong> – weights for the least squares problem</p></li>
+<li><p><strong>random_seed</strong> – random seed for reproducibility</p></li>
+<li><p><strong>smooth_polyorder</strong> – polynomial order for the Savitzky-Golay filter</p></li>
+<li><p><strong>peak_threshold</strong> – threshold for identifying peaks and valleys</p></li>
+<li><p><strong>prominence_threshold</strong> – threshold for identifying significant peaks and valleys</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autopwlf.AutoPWLF.auto_fit">
+<span class="sig-name descname"><span class="pre">auto_fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fitfast</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#bool" title="(in Python v3.7)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#int" title="(in Python v3.7)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">complexity_penalty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">PiecewiseLinFit</span></span></span><a class="reference internal" href="_modules/autopwlf/autopwlf.html#AutoPWLF.auto_fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autopwlf.AutoPWLF.auto_fit" title="Link to this definition"></a></dt>
+<dd><p>Fit a piecewise linear function with automated number of breaks found from the stationary points
+Adding a buffer to the number of breaks to allow for more flexibility with the model chosen by the BIC</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fitfast</strong> – if true, use the fast fitting method for the piecewise linear fit</p></li>
+<li><p><strong>buffer</strong> – buffer for the number of breaks to allow for more flexibility</p></li>
+<li><p><strong>complexity_penalty</strong> – complexity penalty for the BIC</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>PiecewiseLinFit model</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pwlf.PiecewiseLinFit</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autopwlf.AutoPWLF.find_num_stationary_points">
+<span class="sig-name descname"><span class="pre">find_num_stationary_points</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#int" title="(in Python v3.7)"><span class="pre">int</span></a></span></span><a class="reference internal" href="_modules/autopwlf/autopwlf.html#AutoPWLF.find_num_stationary_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autopwlf.AutoPWLF.find_num_stationary_points" title="Link to this definition"></a></dt>
+<dd><p>Find the number of stationary points in the data set to use as min and max breaks
+First fit a smoothened interpolation function on the data
+Then find the number of peaks and valleys in the data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of stationary points</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#int" title="(in Python v3.7)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autopwlf.AutoPWLF.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_breaks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#int" title="(in Python v3.7)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_breaks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#int" title="(in Python v3.7)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://python.readthedocs.io/en/latest/library/constants.html#None" title="(in Python v3.7)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">complexity_penalty</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#int" title="(in Python v3.7)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fitfast</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/functions.html#bool" title="(in Python v3.7)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://python.readthedocs.io/en/latest/library/stdtypes.html#tuple" title="(in Python v3.7)"><span class="pre">tuple</span></a></span></span><a class="reference internal" href="_modules/autopwlf/autopwlf.html#AutoPWLF.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autopwlf.AutoPWLF.fit" title="Link to this definition"></a></dt>
+<dd><p>Finds the optimal number of breaks for a piecewise linear fit using the Bayesian Information Criterion (BIC)
+and then plots the piecewise linear fit of the given data set</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>min_breaks</strong> – minimum number of breaks</p></li>
+<li><p><strong>max_breaks</strong> – maximum number of breaks</p></li>
+<li><p><strong>complexity_penalty</strong> – complexity penalty for the BIC</p></li>
+<li><p><strong>fitfast</strong> – if true, use the fast fitting method for the piecewise linear fit</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Optimal number of breaks, PiecewiseLinFit model</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://python.readthedocs.io/en/latest/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Nedeesha Weerasuriya.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
