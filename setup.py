@@ -30,4 +30,6 @@ setup(
         "docs": ["sphinx>=3.0", "sphinx_rtd_theme"],
     },
     python_requires=">=3.7",
+    project_urls={"GitHub": "https://github.com/nweerasuriya/auto_pwlf"},
+    license="MIT",
 )
