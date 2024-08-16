@@ -123,13 +123,13 @@
 <span class="n">model_fit</span> <span class="o">=</span> <span class="n">apwlf</span><span class="o">.</span><span class="n">auto_fit</span><span class="p">()</span> <span class="c1"># default complexity penlty is 20</span>
 </pre></div>
 </div>
-<img alt="https://github.com/nweerasuriya/auto_pwlf/blob/main/examples/example_default_params.png" src="https://github.com/nweerasuriya/auto_pwlf/blob/main/examples/example_default_params.png" />
+<img alt="examples/example_default_params.png" src="examples/example_default_params.png" />
 <p>Lowering complexity penalty will often result in more segments.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">apwlf</span> <span class="o">=</span> <span class="n">autopwlf</span><span class="o">.</span><span class="n">AutoPWLF</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 <span class="n">model_fit</span> <span class="o">=</span> <span class="n">apwlf</span><span class="o">.</span><span class="n">auto_fit</span><span class="p">(</span><span class="n">complexity</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="https://github.com/nweerasuriya/auto_pwlf/blob/main/examples/example_low_complex_penalty.png" src="https://github.com/nweerasuriya/auto_pwlf/blob/main/examples/example_low_complex_penalty.png" />
+<img alt="examples/example_low_complex_penalty.png" src="examples/example_low_complex_penalty.png" />
 <p>For better model perfomance (at the cost of speed), set fastfit=False. Recommended to use buffer of 0 or 1 to prevent large runtime.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_pwlf</span> <span class="o">=</span> <span class="n">apwlf</span><span class="o">.</span><span class="n">auto_fit</span><span class="p">(</span><span class="n">fastfit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">buffer</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
