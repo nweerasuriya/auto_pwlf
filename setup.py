@@ -1,8 +1,8 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(
     name="autopwlf",
-    version="0.8.0",
+    version="0.9.0",
     author="Nedeesha Weerasuriya",
     author_email="nedeeshawork@gmail.com",
     description="Automated piecewise linear fitting",
@@ -14,6 +14,7 @@ setup(
         "numpy>=1.24.0",
         "scipy>=1.11.4",
         "pwlf>=2.2.1",
+        "scikit-learn>=1.3.0",
     ],
     classifiers=[
         "Development Status :: 3 - Alpha",

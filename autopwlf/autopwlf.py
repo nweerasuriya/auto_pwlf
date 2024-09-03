@@ -23,15 +23,18 @@ SOFTWARE.
 
 """
 
-__date__ = "2024-08-03"
+__date__ = "2024-09-03"
 __author__ = "NedeeshaWeerasuriya"
-__version__ = "0.1"
+__version__ = "0.9.0"
 
+
+from typing import Tuple
 
 import numpy as np
 import pwlf
 from scipy.interpolate import interp1d
 from scipy.signal import find_peaks, peak_prominences, savgol_filter
+from sklearn.linear_model import ElasticNetCV
 
 
 class AutoPWLF(object):
@@ -72,7 +75,6 @@ class AutoPWLF(object):
         x, y = self._switch_to_np_array(x_data), self._switch_to_np_array(y_data)
 
         self.x, self.y = x, y
-        self.smooth_polyorder = smooth_polyorder
         self.disp_res = disp_res
         self.lapack_driver = lapack_driver
         self.degree = degree
@@ -89,6 +91,7 @@ class AutoPWLF(object):
         self.stationary_points = None
         self.y_smooth = None
         self.optimal_breaks = None
+        self.outliers = None
 
     @staticmethod
     def _switch_to_np_array(input_):
@@ -104,6 +107,24 @@ class AutoPWLF(object):
         if isinstance(input_, np.ndarray) is False:
             input_ = np.array(input_)
         return input_
+
+    @staticmethod
+    def _filter_outliers(
+        x: np.ndarray, y: np.ndarray, outliers: np.ndarray
+    ) -> Tuple[np.ndarray, np.ndarray]:
+        """
+        Remove outliers from the data.
+
+        Args:
+            x: Independent variable.
+            y: Dependent variable.
+            outliers: Indices of outliers to be removed.
+
+        Returns:
+            Tuple[np.ndarray, np.ndarray]: Filtered x and y data without outliers.
+        """
+        mask = ~np.isin(np.arange(len(x)), outliers)
+        return x[mask], y[mask]
 
     @staticmethod
     def _find_peaks_valleys(
@@ -156,6 +177,55 @@ class AutoPWLF(object):
         y_smooth = savgol_filter(y, window_size, poly_order)
         return y_smooth
 
+    def auto_fit(
+        self,
+        fitfast: bool = True,
+        buffer: int = 2,
+        complexity_penalty=20,
+        outliers: bool = False,
+        outlier_threshold: int = 5,
+    ) -> pwlf.PiecewiseLinFit:
+        """
+        Fit a piecewise linear function with automated number of breaks found from the stationary points
+        Adding a buffer to the number of breaks to allow for more flexibility with the model chosen by the BIC
+
+        Args:
+            fitfast: if true, use the fast fitting method for the piecewise linear fit
+            buffer: buffer for the number of breaks to allow for more flexibility
+            complexity_penalty: complexity penalty for the BIC
+            outliers: if true, remove outliers from the data
+            outlier_threshold: threshold for identifying outliers: standard deviations from the mean residual
+
+        Returns:
+            pwlf.PiecewiseLinFit: PiecewiseLinFit model
+        """
+        self.stationary_points = self.find_num_stationary_points()
+        if outliers:
+            # Initial fit to detect outliers
+            init_breaks = max(1, self.stationary_points)
+            _, init_pwlf = self.fit(self.x, self.y, init_breaks, init_breaks)
+            self.outliers = self.find_outliers(init_pwlf, outlier_threshold)
+            # Remove outliers from the data
+            x_filtered, y_filtered = self._filter_outliers(
+                self.x, self.y, self.outliers
+            )
+        else:
+            x_filtered, y_filtered = self.x, self.y
+
+        min_breaks = self.stationary_points - buffer
+        max_breaks = self.stationary_points + buffer
+
+        optimal_breaks, my_pwlf = self.fit(
+            x_filtered,
+            y_filtered,
+            min_breaks,
+            max_breaks,
+            complexity_penalty=complexity_penalty,
+            fitfast=fitfast,
+        )
+        self.optimal_breaks = optimal_breaks
+        return my_pwlf
+
     def find_num_stationary_points(self) -> int:
         """
         Find the number of stationary points in the data set to use as min and max breaks
@@ -170,7 +240,7 @@ class AutoPWLF(object):
         f = interp1d(self.x, y_smooth, kind="linear")
         xnew = np.linspace(self.x.min(), self.x.max(), num=100)
         ynew = f(xnew)
-        # Find maxima and minima of the smoothed linear interpolation
+        # Find maxima and minima of the smoothened linear interpolation
         peaks, valleys = self._find_peaks_valleys(
             ynew, self.peak_threshold, self.prominence_threshold
         )
@@ -181,6 +251,8 @@ class AutoPWLF(object):
 
     def fit(
         self,
+        x: np.array,
+        y: np.array,
         min_breaks: int,
         max_breaks: int = None,
         complexity_penalty: int = 20,
@@ -191,6 +263,8 @@ class AutoPWLF(object):
         and then plots the piecewise linear fit of the given data set
 
         Args:
+            x: Independent variable.
+            y: Dependent variable.
             min_breaks: minimum number of breaks
             max_breaks: maximum number of breaks
             complexity_penalty: complexity penalty for the BIC
@@ -202,17 +276,17 @@ class AutoPWLF(object):
         if not max_breaks:
             max_breaks = min_breaks
 
-        if min_breaks > 1:
+        if min_breaks < 1:
             min_breaks = 1
 
         # BIC calculation
         bic_values = []
         pwlf_list = []
-        n = len(self.y)
+        n = len(y)
         for breaks in range(min_breaks, max_breaks + 1):
             my_pwlf = pwlf.PiecewiseLinFit(
-                self.x,
-                self.y,
+                x,
+                y,
                 seed=self.random_seed,
                 degree=self.degree,
                 weights=self.weights,
@@ -223,8 +297,8 @@ class AutoPWLF(object):
             else:
                 my_pwlf.fit(breaks)
             # calculate the residual sum of squares
-            yhat = my_pwlf.predict(self.x)
-            rss = np.sum((self.y - yhat) ** 2)
+            yhat = my_pwlf.predict(x)
+            rss = np.sum((y - yhat) ** 2)
             # calculate the BIC
             bic = n * np.log(rss / n) + complexity_penalty * breaks * np.log(n)
             bic_values.append(bic)
@@ -232,35 +306,39 @@ class AutoPWLF(object):
 
         optimal_index = np.argmin(bic_values)
         self.optimal_breaks = min_breaks + optimal_index
-
-        print(f"Optimal number of breaks: {self.optimal_breaks}")
         return self.optimal_breaks, pwlf_list[optimal_index]
 
-    def auto_fit(
-        self, fitfast: bool = True, buffer: int = 2, complexity_penalty=20
-    ) -> pwlf.PiecewiseLinFit:
+    def find_outliers(self, pwlf_model: pwlf.PiecewiseLinFit, outlier_threshold: int):
         """
-        Fit a piecewise linear function with automated number of breaks found from the stationary points
-        Adding a buffer to the number of breaks to allow for more flexibility with the model chosen by the BIC
+        This function adjusts the outliers by fitting a new piecewise linear model without the outliers
 
         Args:
-            fitfast: if true, use the fast fitting method for the piecewise linear fit
-            buffer: buffer for the number of breaks to allow for more flexibility
-            complexity_penalty: complexity penalty for the BIC
+            pwlf_model: PiecewiseLinFit model
+            outlier_threshold: threshold for identifying outliers: standard deviations from the mean residual
 
         Returns:
-            pwlf.PiecewiseLinFit: PiecewiseLinFit model
+            outliers: array containing the outliers
+
         """
-        self.stationary_points = self.find_num_stationary_points()
-        min_breaks = self.stationary_points - buffer
-        max_breaks = self.stationary_points + buffer
-
-        optimal_breaks, my_pwlf = self.fit(
-            min_breaks,
-            max_breaks,
-            complexity_penalty=complexity_penalty,
-            fitfast=fitfast,
+        # Remove the outliers from the data
+        fit_breaks = pwlf_model.fit_breaks
+        A = pwlf_model.assemble_regression_matrix(fit_breaks, self.x)
+        en_model = ElasticNetCV(
+            cv=5,
+            l1_ratio=[0.1, 0.5, 0.7, 0.9, 0.95, 1],
+            fit_intercept=False,
+            max_iter=1000,
+            n_jobs=-1,
         )
-        self.optimal_breaks = optimal_breaks
+        en_model.fit(A, self.y)
 
-        return my_pwlf
+        # Calculate the residuals
+        y_hat = pwlf_model.predict(self.x)
+        residuals = self.y - y_hat
+
+        # Identify outliers as points that are more than 'outlier_threshold' standard deviations from the mean residual
+        outlier_mask = np.abs(
+            residuals - np.mean(residuals)
+        ) > outlier_threshold * np.std(residuals)
+        outliers = self.x[outlier_mask]
+        return outliers
