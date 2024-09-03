@@ -98,7 +98,7 @@ If outliers are present in the data, they can be detected and ignored in the fit
     apwlf = autopwlf.AutoPWLF(x, y)
     model_fit = apwlf.auto_fit(outliers=True, outlier_threshold=4)
 
-.. figure:: https://github.com/nweerasuriya/auto_pwlf/blob/main/examples/example_with_outliers.png
+.. image:: ../examples/example_with_outliers.png
 
     
 Contents
