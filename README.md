@@ -1,5 +1,6 @@
 # Auto PWLF
 Piecewise Linear Fit with ability to automatically find the optimal number of line segments.
+In addition outliers can be detected and avoided during the fitting process.
 
 Full Documentation can be found here: [Documentation](https://autopwlf.readthedocs.io/en/latest/#)
 
@@ -9,7 +10,8 @@ Installation available through pip: https://pypi.org/project/autopwlf/
 pip install autopwlf
 ```
 
-![image](https://github.com/user-attachments/assets/aac67188-37ad-4e89-8eca-160d67e6c7d9)
+![image](https://github.com/user-attachments/assets/c4f8bc1c-5287-431e-a3ea-abb289ca7fcb)
+
 
 
 The piecewise fitting uses the [pwlf module](https://github.com/cjekel/piecewise_linear_fit_py) with full credit to all contributors to this package.
