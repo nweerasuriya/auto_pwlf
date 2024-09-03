@@ -15,5 +15,5 @@ python:
     - requirements: docs/requirements.txt
 
 formats:
-  - pdf
+  - htmlzip
   - epub

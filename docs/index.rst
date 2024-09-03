@@ -46,7 +46,7 @@ Default usage involves calling auto_fit() method with the x and y data. fastfit 
     apwlf = autopwlf.AutoPWLF(x, y)
     model_fit = apwlf.auto_fit() # default complexity penlty is 20
 
-.. figure:: https://github.com/nweerasuriya/auto_pwlf/blob/main/examples/example_default_params.png
+.. image:: ../examples/example_default_params.png
 
 Lowering complexity penalty will often result in more segments.
 
@@ -55,7 +55,7 @@ Lowering complexity penalty will often result in more segments.
     apwlf = autopwlf.AutoPWLF(x, y)
     model_fit = apwlf.auto_fit(complexity=5)
 
-.. figure:: https://github.com/nweerasuriya/auto_pwlf/blob/main/examples/example_low_complex_penalty.png
+.. image:: ../examples/example_low_complex_penalty.png
 
 For better model perfomance (at the cost of speed), set fastfit=False. Recommended to use buffer of 0 or 1 to prevent large runtime.
 
