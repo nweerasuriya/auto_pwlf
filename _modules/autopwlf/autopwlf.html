@@ -93,15 +93,18 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="n">__date__</span> <span class="o">=</span> <span class="s2">&quot;2024-08-03&quot;</span>
+<span class="n">__date__</span> <span class="o">=</span> <span class="s2">&quot;2024-09-03&quot;</span>
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;NedeeshaWeerasuriya&quot;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.1&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.9.0&quot;</span>
 
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pwlf</span>
 <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
 <span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">find_peaks</span><span class="p">,</span> <span class="n">peak_prominences</span><span class="p">,</span> <span class="n">savgol_filter</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">ElasticNetCV</span>
 
 
 <div class="viewcode-block" id="AutoPWLF">
@@ -146,7 +149,6 @@
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_switch_to_np_array</span><span class="p">(</span><span class="n">x_data</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_switch_to_np_array</span><span class="p">(</span><span class="n">y_data</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">smooth_polyorder</span> <span class="o">=</span> <span class="n">smooth_polyorder</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">disp_res</span> <span class="o">=</span> <span class="n">disp_res</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lapack_driver</span> <span class="o">=</span> <span class="n">lapack_driver</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">degree</span> <span class="o">=</span> <span class="n">degree</span>
@@ -162,7 +164,8 @@
         <span class="c1"># Initialise empty attributes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stationary_points</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y_smooth</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">optimal_breaks</span> <span class="o">=</span> <span class="kc">None</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimal_breaks</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outliers</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
     <span class="nd">@staticmethod</span>
@@ -179,6 +182,24 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="n">input_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">input_</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">input_</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_filter_outliers</span><span class="p">(</span>
+        <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">outliers</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove outliers from the data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x: Independent variable.</span>
+<span class="sd">            y: Dependent variable.</span>
+<span class="sd">            outliers: Indices of outliers to be removed.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Tuple[np.ndarray, np.ndarray]: Filtered x and y data without outliers.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span> <span class="n">outliers</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_find_peaks_valleys</span><span class="p">(</span>
@@ -231,6 +252,58 @@
         <span class="n">y_smooth</span> <span class="o">=</span> <span class="n">savgol_filter</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">window_size</span><span class="p">,</span> <span class="n">poly_order</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">y_smooth</span>
 
+<div class="viewcode-block" id="AutoPWLF.auto_fit">
+<a class="viewcode-back" href="../../index.html#autopwlf.AutoPWLF.auto_fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">auto_fit</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">fitfast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">buffer</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">complexity_penalty</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+        <span class="n">outliers</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">outlier_threshold</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pwlf</span><span class="o">.</span><span class="n">PiecewiseLinFit</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit a piecewise linear function with automated number of breaks found from the stationary points</span>
+<span class="sd">        Adding a buffer to the number of breaks to allow for more flexibility with the model chosen by the BIC</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            fitfast: if true, use the fast fitting method for the piecewise linear fit</span>
+<span class="sd">            buffer: buffer for the number of breaks to allow for more flexibility</span>
+<span class="sd">            complexity_penalty: complexity penalty for the BIC</span>
+<span class="sd">            outliers: if true, remove outliers from the data</span>
+<span class="sd">            outlier_threshold: threshold for identifying outliers: standard deviations from the mean residual</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pwlf.PiecewiseLinFit: PiecewiseLinFit model</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stationary_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_num_stationary_points</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">outliers</span><span class="p">:</span>
+            <span class="c1"># Initial fit to detect outliers</span>
+            <span class="n">init_breaks</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stationary_points</span><span class="p">)</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">init_pwlf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">init_breaks</span><span class="p">,</span> <span class="n">init_breaks</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">outliers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_outliers</span><span class="p">(</span><span class="n">init_pwlf</span><span class="p">,</span> <span class="n">outlier_threshold</span><span class="p">)</span>
+            <span class="c1"># Remove outliers from the data</span>
+            <span class="n">x_filtered</span><span class="p">,</span> <span class="n">y_filtered</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filter_outliers</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">outliers</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x_filtered</span><span class="p">,</span> <span class="n">y_filtered</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
+
+        <span class="n">min_breaks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stationary_points</span> <span class="o">-</span> <span class="n">buffer</span>
+        <span class="n">max_breaks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stationary_points</span> <span class="o">+</span> <span class="n">buffer</span>
+
+        <span class="n">optimal_breaks</span><span class="p">,</span> <span class="n">my_pwlf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+            <span class="n">x_filtered</span><span class="p">,</span>
+            <span class="n">y_filtered</span><span class="p">,</span>
+            <span class="n">min_breaks</span><span class="p">,</span>
+            <span class="n">max_breaks</span><span class="p">,</span>
+            <span class="n">complexity_penalty</span><span class="o">=</span><span class="n">complexity_penalty</span><span class="p">,</span>
+            <span class="n">fitfast</span><span class="o">=</span><span class="n">fitfast</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimal_breaks</span> <span class="o">=</span> <span class="n">optimal_breaks</span>
+        <span class="k">return</span> <span class="n">my_pwlf</span></div>
+
+
 <div class="viewcode-block" id="AutoPWLF.find_num_stationary_points">
 <a class="viewcode-back" href="../../index.html#autopwlf.AutoPWLF.find_num_stationary_points">[docs]</a>
     <span class="k">def</span> <span class="nf">find_num_stationary_points</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
@@ -247,7 +320,7 @@
         <span class="n">f</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">y_smooth</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">)</span>
         <span class="n">xnew</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">num</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
         <span class="n">ynew</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">xnew</span><span class="p">)</span>
-        <span class="c1"># Find maxima and minima of the smoothed linear interpolation</span>
+        <span class="c1"># Find maxima and minima of the smoothened linear interpolation</span>
         <span class="n">peaks</span><span class="p">,</span> <span class="n">valleys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_peaks_valleys</span><span class="p">(</span>
             <span class="n">ynew</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">peak_threshold</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prominence_threshold</span>
         <span class="p">)</span>
@@ -261,6 +334,8 @@
 <a class="viewcode-back" href="../../index.html#autopwlf.AutoPWLF.fit">[docs]</a>
     <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span>
+        <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span>
         <span class="n">min_breaks</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">max_breaks</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">complexity_penalty</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
@@ -271,6 +346,8 @@
 <span class="sd">        and then plots the piecewise linear fit of the given data set</span>
 
 <span class="sd">        Args:</span>
+<span class="sd">            x: Independent variable.</span>
+<span class="sd">            y: Dependent variable.</span>
 <span class="sd">            min_breaks: minimum number of breaks</span>
 <span class="sd">            max_breaks: maximum number of breaks</span>
 <span class="sd">            complexity_penalty: complexity penalty for the BIC</span>
@@ -282,17 +359,17 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">max_breaks</span><span class="p">:</span>
             <span class="n">max_breaks</span> <span class="o">=</span> <span class="n">min_breaks</span>
 
-        <span class="k">if</span> <span class="n">min_breaks</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">min_breaks</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">min_breaks</span> <span class="o">=</span> <span class="mi">1</span>
 
         <span class="c1"># BIC calculation</span>
         <span class="n">bic_values</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">pwlf_list</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">breaks</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">min_breaks</span><span class="p">,</span> <span class="n">max_breaks</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
             <span class="n">my_pwlf</span> <span class="o">=</span> <span class="n">pwlf</span><span class="o">.</span><span class="n">PiecewiseLinFit</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+                <span class="n">x</span><span class="p">,</span>
+                <span class="n">y</span><span class="p">,</span>
                 <span class="n">seed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_seed</span><span class="p">,</span>
                 <span class="n">degree</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
                 <span class="n">weights</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">,</span>
@@ -303,8 +380,8 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">my_pwlf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">breaks</span><span class="p">)</span>
             <span class="c1"># calculate the residual sum of squares</span>
-            <span class="n">yhat</span> <span class="o">=</span> <span class="n">my_pwlf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
-            <span class="n">rss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">yhat</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">yhat</span> <span class="o">=</span> <span class="n">my_pwlf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">rss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="n">yhat</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
             <span class="c1"># calculate the BIC</span>
             <span class="n">bic</span> <span class="o">=</span> <span class="n">n</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">rss</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="n">complexity_penalty</span> <span class="o">*</span> <span class="n">breaks</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
             <span class="n">bic_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bic</span><span class="p">)</span>
@@ -312,41 +389,45 @@
 
         <span class="n">optimal_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">bic_values</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimal_breaks</span> <span class="o">=</span> <span class="n">min_breaks</span> <span class="o">+</span> <span class="n">optimal_index</span>
-
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Optimal number of breaks: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">optimal_breaks</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimal_breaks</span><span class="p">,</span> <span class="n">pwlf_list</span><span class="p">[</span><span class="n">optimal_index</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="AutoPWLF.auto_fit">
-<a class="viewcode-back" href="../../index.html#autopwlf.AutoPWLF.auto_fit">[docs]</a>
-    <span class="k">def</span> <span class="nf">auto_fit</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">fitfast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">buffer</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">complexity_penalty</span><span class="o">=</span><span class="mi">20</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pwlf</span><span class="o">.</span><span class="n">PiecewiseLinFit</span><span class="p">:</span>
+<div class="viewcode-block" id="AutoPWLF.find_outliers">
+<a class="viewcode-back" href="../../index.html#autopwlf.AutoPWLF.find_outliers">[docs]</a>
+    <span class="k">def</span> <span class="nf">find_outliers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pwlf_model</span><span class="p">:</span> <span class="n">pwlf</span><span class="o">.</span><span class="n">PiecewiseLinFit</span><span class="p">,</span> <span class="n">outlier_threshold</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Fit a piecewise linear function with automated number of breaks found from the stationary points</span>
-<span class="sd">        Adding a buffer to the number of breaks to allow for more flexibility with the model chosen by the BIC</span>
+<span class="sd">        This function adjusts the outliers by fitting a new piecewise linear model without the outliers</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            fitfast: if true, use the fast fitting method for the piecewise linear fit</span>
-<span class="sd">            buffer: buffer for the number of breaks to allow for more flexibility</span>
-<span class="sd">            complexity_penalty: complexity penalty for the BIC</span>
+<span class="sd">            pwlf_model: PiecewiseLinFit model</span>
+<span class="sd">            outlier_threshold: threshold for identifying outliers: standard deviations from the mean residual</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            pwlf.PiecewiseLinFit: PiecewiseLinFit model</span>
+<span class="sd">            outliers: array containing the outliers</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stationary_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_num_stationary_points</span><span class="p">()</span>
-        <span class="n">min_breaks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stationary_points</span> <span class="o">-</span> <span class="n">buffer</span>
-        <span class="n">max_breaks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stationary_points</span> <span class="o">+</span> <span class="n">buffer</span>
-
-        <span class="n">optimal_breaks</span><span class="p">,</span> <span class="n">my_pwlf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
-            <span class="n">min_breaks</span><span class="p">,</span>
-            <span class="n">max_breaks</span><span class="p">,</span>
-            <span class="n">complexity_penalty</span><span class="o">=</span><span class="n">complexity_penalty</span><span class="p">,</span>
-            <span class="n">fitfast</span><span class="o">=</span><span class="n">fitfast</span><span class="p">,</span>
+        <span class="c1"># Remove the outliers from the data</span>
+        <span class="n">fit_breaks</span> <span class="o">=</span> <span class="n">pwlf_model</span><span class="o">.</span><span class="n">fit_breaks</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">pwlf_model</span><span class="o">.</span><span class="n">assemble_regression_matrix</span><span class="p">(</span><span class="n">fit_breaks</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">en_model</span> <span class="o">=</span> <span class="n">ElasticNetCV</span><span class="p">(</span>
+            <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">l1_ratio</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+            <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">optimal_breaks</span> <span class="o">=</span> <span class="n">optimal_breaks</span>
+        <span class="n">en_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">my_pwlf</span></div>
+        <span class="c1"># Calculate the residuals</span>
+        <span class="n">y_hat</span> <span class="o">=</span> <span class="n">pwlf_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">residuals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">y_hat</span>
+
+        <span class="c1"># Identify outliers as points that are more than &#39;outlier_threshold&#39; standard deviations from the mean residual</span>
+        <span class="n">outlier_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span>
+            <span class="n">residuals</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">residuals</span><span class="p">)</span>
+        <span class="p">)</span> <span class="o">&gt;</span> <span class="n">outlier_threshold</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">residuals</span><span class="p">)</span>
+        <span class="n">outliers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">outlier_mask</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">outliers</span></div>
 </div>
 
 </pre></div>
