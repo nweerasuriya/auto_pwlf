@@ -25,7 +25,7 @@ SOFTWARE.
 
 __date__ = "2025-02-13"
 __author__ = "NedeeshaWeerasuriya"
-__version__ = "0.9.1"
+__version__ = "0.9.2"
 
 
 from typing import Tuple
@@ -71,6 +71,15 @@ class AutoPWLF(object):
             smooth_polyorder: polynomial order for the Savitzky-Golay filter
             peak_threshold: threshold for identifying peaks and valleys
             prominence_threshold: threshold for identifying significant peaks and valleys
+
+        Attributes:
+            stationary_points: number of stationary points in the data set
+            y_smooth: smoothed y values
+            optimal_breaks: optimal number of breaks
+            outliers: array containing the outliers
+            initial_outlier_model: initial piecewise linear model used for the outlier detection
+            outlier_detection_pred: predicted values without the outliers
+            outlier_detection_residuals: residuals without the outliers
         """
         x, y = self._switch_to_np_array(x_data), self._switch_to_np_array(y_data)
 
@@ -93,7 +102,7 @@ class AutoPWLF(object):
         self.optimal_breaks = None
         # Outliers attributes
         self.outliers = None
-        self.outlier_detection_model = None
+        self.initial_outlier_model = None
         self.outlier_detection_pred = None
         self.outlier_detection_residuals = None
 
@@ -341,7 +350,7 @@ class AutoPWLF(object):
         residuals = self.y - y_hat
 
         # Store attributes for outlier detection
-        self.outlier_detection_model = pwlf_model
+        self.initial_outlier_model = pwlf_model
         self.outlier_detection_pred = y_hat
         self.outlier_detection_residuals = residuals
 
