@@ -23,9 +23,9 @@ SOFTWARE.
 
 """
 
-__date__ = "2024-09-03"
+__date__ = "2025-02-13"
 __author__ = "NedeeshaWeerasuriya"
-__version__ = "0.9.0"
+__version__ = "0.9.1"
 
 
 from typing import Tuple
@@ -91,7 +91,11 @@ class AutoPWLF(object):
         self.stationary_points = None
         self.y_smooth = None
         self.optimal_breaks = None
+        # Outliers attributes
         self.outliers = None
+        self.outlier_detection_model = None
+        self.outlier_detection_pred = None
+        self.outlier_detection_residuals = None
 
     @staticmethod
     def _switch_to_np_array(input_):
@@ -335,6 +339,11 @@ class AutoPWLF(object):
         # Calculate the residuals
         y_hat = pwlf_model.predict(self.x)
         residuals = self.y - y_hat
+
+        # Store attributes for outlier detection
+        self.outlier_detection_model = pwlf_model
+        self.outlier_detection_pred = y_hat
+        self.outlier_detection_residuals = residuals
 
         # Identify outliers as points that are more than 'outlier_threshold' standard deviations from the mean residual
         outlier_mask = np.abs(
