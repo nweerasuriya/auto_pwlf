@@ -47,7 +47,16 @@
 <li><a class="reference internal" href="#examples">Examples</a></li>
 <li><a class="reference internal" href="#contents">Contents</a><ul>
 <li><a class="reference internal" href="#autopwlf.AutoPWLF"><code class="docutils literal notranslate"><span class="pre">AutoPWLF</span></code></a><ul>
-<li><a class="reference internal" href="#autopwlf.AutoPWLF.__init__"><code class="docutils literal notranslate"><span class="pre">AutoPWLF.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#autopwlf.AutoPWLF.__init__"><code class="docutils literal notranslate"><span class="pre">AutoPWLF.__init__()</span></code></a><ul>
+<li><a class="reference internal" href="#autopwlf.AutoPWLF.stationary_points"><code class="docutils literal notranslate"><span class="pre">AutoPWLF.stationary_points</span></code></a></li>
+<li><a class="reference internal" href="#autopwlf.AutoPWLF.y_smooth"><code class="docutils literal notranslate"><span class="pre">AutoPWLF.y_smooth</span></code></a></li>
+<li><a class="reference internal" href="#autopwlf.AutoPWLF.optimal_breaks"><code class="docutils literal notranslate"><span class="pre">AutoPWLF.optimal_breaks</span></code></a></li>
+<li><a class="reference internal" href="#autopwlf.AutoPWLF.outliers"><code class="docutils literal notranslate"><span class="pre">AutoPWLF.outliers</span></code></a></li>
+<li><a class="reference internal" href="#autopwlf.AutoPWLF.initial_outlier_model"><code class="docutils literal notranslate"><span class="pre">AutoPWLF.initial_outlier_model</span></code></a></li>
+<li><a class="reference internal" href="#autopwlf.AutoPWLF.outlier_detection_pred"><code class="docutils literal notranslate"><span class="pre">AutoPWLF.outlier_detection_pred</span></code></a></li>
+<li><a class="reference internal" href="#autopwlf.AutoPWLF.outlier_detection_residuals"><code class="docutils literal notranslate"><span class="pre">AutoPWLF.outlier_detection_residuals</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#autopwlf.AutoPWLF.auto_fit"><code class="docutils literal notranslate"><span class="pre">AutoPWLF.auto_fit()</span></code></a></li>
 <li><a class="reference internal" href="#autopwlf.AutoPWLF.find_num_stationary_points"><code class="docutils literal notranslate"><span class="pre">AutoPWLF.find_num_stationary_points()</span></code></a></li>
 <li><a class="reference internal" href="#autopwlf.AutoPWLF.find_outliers"><code class="docutils literal notranslate"><span class="pre">AutoPWLF.find_outliers()</span></code></a></li>
@@ -196,6 +205,48 @@ Supply x and y values which will be used to fit the piecewise linear function to
 </ul>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autopwlf.AutoPWLF.stationary_points">
+<span class="sig-name descname"><span class="pre">stationary_points</span></span><a class="headerlink" href="#autopwlf.AutoPWLF.stationary_points" title="Link to this definition"></a></dt>
+<dd><p>number of stationary points in the data set</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autopwlf.AutoPWLF.y_smooth">
+<span class="sig-name descname"><span class="pre">y_smooth</span></span><a class="headerlink" href="#autopwlf.AutoPWLF.y_smooth" title="Link to this definition"></a></dt>
+<dd><p>smoothed y values</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autopwlf.AutoPWLF.optimal_breaks">
+<span class="sig-name descname"><span class="pre">optimal_breaks</span></span><a class="headerlink" href="#autopwlf.AutoPWLF.optimal_breaks" title="Link to this definition"></a></dt>
+<dd><p>optimal number of breaks</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autopwlf.AutoPWLF.outliers">
+<span class="sig-name descname"><span class="pre">outliers</span></span><a class="headerlink" href="#autopwlf.AutoPWLF.outliers" title="Link to this definition"></a></dt>
+<dd><p>array containing the outliers</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autopwlf.AutoPWLF.initial_outlier_model">
+<span class="sig-name descname"><span class="pre">initial_outlier_model</span></span><a class="headerlink" href="#autopwlf.AutoPWLF.initial_outlier_model" title="Link to this definition"></a></dt>
+<dd><p>initial piecewise linear model used for the outlier detection</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autopwlf.AutoPWLF.outlier_detection_pred">
+<span class="sig-name descname"><span class="pre">outlier_detection_pred</span></span><a class="headerlink" href="#autopwlf.AutoPWLF.outlier_detection_pred" title="Link to this definition"></a></dt>
+<dd><p>predicted values without the outliers</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autopwlf.AutoPWLF.outlier_detection_residuals">
+<span class="sig-name descname"><span class="pre">outlier_detection_residuals</span></span><a class="headerlink" href="#autopwlf.AutoPWLF.outlier_detection_residuals" title="Link to this definition"></a></dt>
+<dd><p>residuals without the outliers</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py method">

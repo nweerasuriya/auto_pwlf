@@ -93,7 +93,7 @@
 
 <span class="n">__date__</span> <span class="o">=</span> <span class="s2">&quot;2025-02-13&quot;</span>
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;NedeeshaWeerasuriya&quot;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.9.1&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.9.2&quot;</span>
 
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span>
@@ -143,6 +143,15 @@
 <span class="sd">            smooth_polyorder: polynomial order for the Savitzky-Golay filter</span>
 <span class="sd">            peak_threshold: threshold for identifying peaks and valleys</span>
 <span class="sd">            prominence_threshold: threshold for identifying significant peaks and valleys</span>
+
+<span class="sd">        Attributes:</span>
+<span class="sd">            stationary_points: number of stationary points in the data set</span>
+<span class="sd">            y_smooth: smoothed y values</span>
+<span class="sd">            optimal_breaks: optimal number of breaks</span>
+<span class="sd">            outliers: array containing the outliers</span>
+<span class="sd">            initial_outlier_model: initial piecewise linear model used for the outlier detection</span>
+<span class="sd">            outlier_detection_pred: predicted values without the outliers</span>
+<span class="sd">            outlier_detection_residuals: residuals without the outliers</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_switch_to_np_array</span><span class="p">(</span><span class="n">x_data</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_switch_to_np_array</span><span class="p">(</span><span class="n">y_data</span><span class="p">)</span>
 
@@ -165,7 +174,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">optimal_breaks</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="c1"># Outliers attributes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">outliers</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">outlier_detection_model</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_outlier_model</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">outlier_detection_pred</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">outlier_detection_residuals</span> <span class="o">=</span> <span class="kc">None</span></div>
 
@@ -425,7 +434,7 @@
         <span class="n">residuals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">y_hat</span>
 
         <span class="c1"># Store attributes for outlier detection</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">outlier_detection_model</span> <span class="o">=</span> <span class="n">pwlf_model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_outlier_model</span> <span class="o">=</span> <span class="n">pwlf_model</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">outlier_detection_pred</span> <span class="o">=</span> <span class="n">y_hat</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">outlier_detection_residuals</span> <span class="o">=</span> <span class="n">residuals</span>
 
