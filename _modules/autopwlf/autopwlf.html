@@ -1,22 +1,20 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>autopwlf.autopwlf &mdash; AutoPWLF 0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=2709fde1"></script>
-        <script src="../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -93,23 +91,23 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="n">__date__</span> <span class="o">=</span> <span class="s2">&quot;2024-09-03&quot;</span>
+<span class="n">__date__</span> <span class="o">=</span> <span class="s2">&quot;2025-02-13&quot;</span>
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;NedeeshaWeerasuriya&quot;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.9.0&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.9.1&quot;</span>
 
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pwlf</span>
-<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
-<span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">find_peaks</span><span class="p">,</span> <span class="n">peak_prominences</span><span class="p">,</span> <span class="n">savgol_filter</span>
-<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">ElasticNetCV</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pwlf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.interpolate</span><span class="w"> </span><span class="kn">import</span> <span class="n">interp1d</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_peaks</span><span class="p">,</span> <span class="n">peak_prominences</span><span class="p">,</span> <span class="n">savgol_filter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElasticNetCV</span>
 
 
 <div class="viewcode-block" id="AutoPWLF">
 <a class="viewcode-back" href="../../index.html#autopwlf.AutoPWLF">[docs]</a>
-<span class="k">class</span> <span class="nc">AutoPWLF</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AutoPWLF</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class to find the optimal number of breaks for a piecewise linear fit using the Bayesian Information Criterion (BIC)</span>
 <span class="sd">    and then fit the piecewise linear function to the given data set</span>
@@ -117,7 +115,7 @@
 
 <div class="viewcode-block" id="AutoPWLF.__init__">
 <a class="viewcode-back" href="../../index.html#autopwlf.AutoPWLF.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">x_data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span>
         <span class="n">y_data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span>
@@ -165,11 +163,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">stationary_points</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y_smooth</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimal_breaks</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">outliers</span> <span class="o">=</span> <span class="kc">None</span></div>
+        <span class="c1"># Outliers attributes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outliers</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outlier_detection_model</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outlier_detection_pred</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outlier_detection_residuals</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_switch_to_np_array</span><span class="p">(</span><span class="n">input_</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_switch_to_np_array</span><span class="p">(</span><span class="n">input_</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Check the input, if it&#39;s not a Numpy array transform it to one.</span>
 
@@ -184,7 +186,7 @@
         <span class="k">return</span> <span class="n">input_</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_filter_outliers</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_filter_outliers</span><span class="p">(</span>
         <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">outliers</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -202,7 +204,7 @@
         <span class="k">return</span> <span class="n">x</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_find_peaks_valleys</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_find_peaks_valleys</span><span class="p">(</span>
         <span class="n">data</span><span class="p">,</span> <span class="n">peak_threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">prominence_threshold</span><span class="p">:</span> <span class="nb">float</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -232,7 +234,7 @@
         <span class="k">return</span> <span class="n">significant_peaks</span><span class="p">,</span> <span class="n">significant_valleys</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_sav_gol_fit</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">poly_order</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_sav_gol_fit</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">poly_order</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Apply the Savitzky-Golay filter to the data set to smooth the data</span>
 
@@ -254,7 +256,7 @@
 
 <div class="viewcode-block" id="AutoPWLF.auto_fit">
 <a class="viewcode-back" href="../../index.html#autopwlf.AutoPWLF.auto_fit">[docs]</a>
-    <span class="k">def</span> <span class="nf">auto_fit</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">auto_fit</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">fitfast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">buffer</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
@@ -306,7 +308,7 @@
 
 <div class="viewcode-block" id="AutoPWLF.find_num_stationary_points">
 <a class="viewcode-back" href="../../index.html#autopwlf.AutoPWLF.find_num_stationary_points">[docs]</a>
-    <span class="k">def</span> <span class="nf">find_num_stationary_points</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_num_stationary_points</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Find the number of stationary points in the data set to use as min and max breaks</span>
 <span class="sd">        First fit a smoothened interpolation function on the data</span>
@@ -332,7 +334,7 @@
 
 <div class="viewcode-block" id="AutoPWLF.fit">
 <a class="viewcode-back" href="../../index.html#autopwlf.AutoPWLF.fit">[docs]</a>
-    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span>
         <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span>
@@ -394,7 +396,7 @@
 
 <div class="viewcode-block" id="AutoPWLF.find_outliers">
 <a class="viewcode-back" href="../../index.html#autopwlf.AutoPWLF.find_outliers">[docs]</a>
-    <span class="k">def</span> <span class="nf">find_outliers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pwlf_model</span><span class="p">:</span> <span class="n">pwlf</span><span class="o">.</span><span class="n">PiecewiseLinFit</span><span class="p">,</span> <span class="n">outlier_threshold</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_outliers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pwlf_model</span><span class="p">:</span> <span class="n">pwlf</span><span class="o">.</span><span class="n">PiecewiseLinFit</span><span class="p">,</span> <span class="n">outlier_threshold</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function adjusts the outliers by fitting a new piecewise linear model without the outliers</span>
 
@@ -421,6 +423,11 @@
         <span class="c1"># Calculate the residuals</span>
         <span class="n">y_hat</span> <span class="o">=</span> <span class="n">pwlf_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
         <span class="n">residuals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">y_hat</span>
+
+        <span class="c1"># Store attributes for outlier detection</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outlier_detection_model</span> <span class="o">=</span> <span class="n">pwlf_model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outlier_detection_pred</span> <span class="o">=</span> <span class="n">y_hat</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outlier_detection_residuals</span> <span class="o">=</span> <span class="n">residuals</span>
 
         <span class="c1"># Identify outliers as points that are more than &#39;outlier_threshold&#39; standard deviations from the mean residual</span>
         <span class="n">outlier_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span>
